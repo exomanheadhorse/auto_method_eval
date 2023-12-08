@@ -53,7 +53,7 @@ class BatchEvaluateHandler:
         id_list: List[int] = list()
         for item in data:
             self.id_2_name.setdefault(item['mol_id'], item['iupac_name'])
-            data.append(item['mol_id'])
+            id_list.append(item['mol_id'])
         self.eval_via_id_list(id_list)
 
 
@@ -63,29 +63,40 @@ class BatchEvaluateHandler:
         exp_data_p = self.get_experiment_data(compounds_id_list, Properties.critical_pressure.value)
         exp_data_t = self.get_experiment_data(compounds_id_list, Properties.critical_temperature.value)
         for id in compounds_id_list:
+            args = dict()
             if id not in ref_data:
                 print(f'{id} does not has data in ref data!')
                 # raise Exception(f'{id} does not exist in db!')
             else:
-                pass # fill into params
+                args['mol_id'] = id
+                args['formula'] = ref_data[id]['formula']
+                args['name'] = ref_data[id]['iupac_name']
+                args['critical_temperature'] = ref_data[id]['critical_temperature']
+                args['critical_pressure'] = ref_data[id]['critical_pressure']
 
             if id not in exp_data_p:
                 print(f'{id} not exist in critical_pressure exp data')
-                raise Exception()
+                raise Exception(f'{id} not exist in critical_pressure exp data')
             else:
-                pass
+                pass # fill params
 
             if id not in exp_data_t:
                 print(f'{id} not exist in critical_temperature data')
+                raise Exception(f'{id} not exist in critical_temperature data')
             else:
-                pass
+                pass # fill params
+            print(args)
 
 
     def get_ref_data(self, id_list: List[int]):
         sql = f'''
-            SELECT * FROM compound_basic_properties
-            WHERE mol_id in ({",".join(id_list)})
+            SELECT a.mol_id, a.critical_temperature, a.critical_pressure, 
+            b.iupac_name, b.formula FROM compounds_basic_properties a 
+            LEFT JOIN compounds_name_info b 
+            ON a.mol_id = b.mol_id
+            WHERE a.mol_id IN ('{"','".join(id_list)}')
         '''
+        print(sql)
         data = self.db_ins.query(sql)
         input_data: Dict[str: dict] = dict()
         for item in data:
@@ -96,7 +107,7 @@ class BatchEvaluateHandler:
     def get_experiment_data(self, id_list: List[int], table_name):
         sql = f'''
             SELECT * FROM {table_name}
-            WHERE mol_id in ({",".join(id_list)})
+            WHERE mol_id in ('{"','".join(id_list)}')
         '''
         data = self.db_ins.query(sql)
         input_data: Dict[str: dict] = dict()
@@ -106,8 +117,8 @@ class BatchEvaluateHandler:
 
 
 if __name__=='__main__':
-    # c_list = ['2-methyl-1,3-dithiolane', '(3S)-thiolane-3-thiol']
-    # x = EvaluateHandler()
-    # x.eval_via_name(c_list)
-    import enum_file
-    print(enum_file.Properties.critical_pressure.value)
+    c_list = ['2-methyl-1,3-dithiolane', '(3S)-thiolane-3-thiol']
+    x = BatchEvaluateHandler()
+    x.eval_via_name_list(c_list)
+    # import enum_file
+    # print(enum_file.Properties.critical_pressure.value)
