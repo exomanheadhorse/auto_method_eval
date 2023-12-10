@@ -12,11 +12,29 @@ class Compound:
         self.critical_temperature_eval_list: List[Property] = args['critical_temperature_eval_list']
         self.critical_pressure: float = args['critical_pressure']
         self.critical_pressure_eval_list: List[Property] = args['critical_pressure_eval_list']
+        self.evaluate()
         # add other properties here
         # self.density = args['density']
     
     def evaluate(self):
-        pass
+        self.resort()
+#        print('before sort...')
+#        for item in self.critical_temperature_eval_list:
+#            print(item.method, item.value, self.sort_method(item.value, self.critical_temperature))
+#        self.resort_critical_temperature()
+#        print('after sort......')
+#        for item in self.critical_temperature_eval_list:
+#            print(item.method, item.value, self.sort_method(item.value, self.critical_temperature))
 
     def resort(self):
-        pass
+        self.resort_critical_pressure()
+        self.resort_critical_temperature()
+
+    def resort_critical_temperature(self):
+        self.critical_temperature_eval_list.sort(key=lambda x: self.sort_method(x.value, self.critical_temperature))
+
+    def resort_critical_pressure(self):
+        self.critical_pressure_eval_list.sort(key=lambda x: self.sort_method(x.value, self.critical_pressure))
+
+    def sort_method(self, exp_data, ref_data):
+        return abs((exp_data - ref_data) / ref_data)
