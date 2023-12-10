@@ -2,6 +2,7 @@ from typing import List, Dict
 import common
 from compound import Compound
 from enum_file import Properties
+from property import Property
 
 
 # class EvaluateHandler:
@@ -78,14 +79,22 @@ class BatchEvaluateHandler:
                 print(f'{id} not exist in critical_pressure exp data')
                 raise Exception(f'{id} not exist in critical_pressure exp data')
             else:
-                pass # fill params
+                cur = []
+                for method, value in exp_data_p[id].items():
+                    cur.append(Property(method, value))
+                args['critical_pressure_eval_list'] = cur
 
             if id not in exp_data_t:
                 print(f'{id} not exist in critical_temperature data')
                 raise Exception(f'{id} not exist in critical_temperature data')
             else:
-                pass # fill params
-            print(args)
+                cur = []
+                for method, value in exp_data_t[id].items():
+                    cur.append(Property(method, value))
+                args['critical_temperature_eval_list'] = cur
+            # print(args)
+            params.setdefault(id, Compound(args=args))
+        print(len(params))
 
 
     def get_ref_data(self, id_list: List[int]):
