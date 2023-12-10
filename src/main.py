@@ -121,7 +121,12 @@ class BatchEvaluateHandler:
         data = self.db_ins.query(sql)
         input_data: Dict[str: dict] = dict()
         for item in data:
-            input_data.setdefault(item['mol_id'], item)
+            cur = dict()
+            for k, v in item.items():
+                if k in ('id', 'mol_id'): # only read experiment values, ignore id and mol_id
+                    continue
+                cur.setdefault(k, v)
+            input_data.setdefault(item['mol_id'], cur)
         return input_data
 
 
