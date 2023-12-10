@@ -4,8 +4,7 @@ from typing import List
 
 
 class Compound:
-    def __init__(self, **args) -> None:
-        self.db_ins = common.get_db_hander()
+    def __init__(self, args) -> None:
         self.mol_id = args['mol_id']
         self.formula = args['formula']
         self.name = args['name']
