@@ -96,6 +96,11 @@ class BatchEvaluateHandler:
             params.setdefault(id, Compound(args=args))
         print(len(params))
 
+        # print output result into terminal
+        for _, item in params.items():
+            item.print_result()
+
+
 
     def get_ref_data(self, id_list: List[int]):
         sql = f'''
@@ -131,7 +136,7 @@ class BatchEvaluateHandler:
 
 
 if __name__=='__main__':
-    c_list = ['2-methyl-1,3-dithiolane', '(3S)-thiolane-3-thiol']
+    c_list = ['butanedithioic acid', '2-methyl-1,3-dithiolane', '(1S)-1-[(2R)-thiiran-2-yl]ethane-1-thiol', '(propylsulfanyl)carbothialdehyde']
     x = BatchEvaluateHandler()
     x.eval_via_name_list(c_list)
     # import enum_file

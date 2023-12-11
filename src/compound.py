@@ -39,4 +39,22 @@ class Compound:
     def cal_deviation(self, exp_data, ref_data):
         return abs((exp_data - ref_data) / ref_data)
 
+    def print_result(self):
+        print('='*30)
+        print(f'''formula={self.formula}, mol_id={self.mol_id}, iupac_name={self.name}:''')
+        print(f''' Tc标准值：{str(self.critical_temperature)}''')
+        print(f'''Tc推荐方法：{str(self.critical_temperature_eval_list[0].method)}, 数值为：{str(self.critical_temperature_eval_list[0].value)}''')
+        self.print_sort_detail(self.critical_temperature_eval_list, self.critical_temperature)
+        print(f'''Tp标准值：{str(self.critical_pressure)}''')
+        print(f'''Tp推荐方法：{str(self.critical_pressure_eval_list[0].method)}, 数值为：{str(self.critical_pressure_eval_list[0].value)}''')
+        self.print_sort_detail(self.critical_pressure_eval_list, self.critical_pressure)
+        print('='*30)
+    
+    def print_sort_detail(self, iter_list: List[Property], ref_data):
+        for item in iter_list:
+            cur = f'''方法：{item.method}, 数值：{str(item.value)}, 误差：{'%.2f %%'%(self.cal_deviation(item.value, ref_data)*100)}'''
+            # cur = f'''方法：{item.method}, 数值：{str(item.value)}, 误差：{'%.2f'%self.cal_deviation(item.value, ref_data)}'''
+            print(cur)
 
+    def output_result(self):
+        pass
