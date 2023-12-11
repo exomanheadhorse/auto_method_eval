@@ -31,10 +31,12 @@ class Compound:
         self.resort_critical_temperature()
 
     def resort_critical_temperature(self):
-        self.critical_temperature_eval_list.sort(key=lambda x: self.sort_method(x.value, self.critical_temperature))
+        self.critical_temperature_eval_list.sort(key=lambda x: self.cal_deviation(x.value, self.critical_temperature))
 
     def resort_critical_pressure(self):
-        self.critical_pressure_eval_list.sort(key=lambda x: self.sort_method(x.value, self.critical_pressure))
+        self.critical_pressure_eval_list.sort(key=lambda x: self.cal_deviation(x.value, self.critical_pressure))
 
-    def sort_method(self, exp_data, ref_data):
+    def cal_deviation(self, exp_data, ref_data):
         return abs((exp_data - ref_data) / ref_data)
+
+
