@@ -6,6 +6,14 @@
 """
 
 
+"""
+    Compounds class was designed to store all of the properties for a special compound, including reference(standard) data and experimental data.
+    After the configuration of object, the experimental data will be self-sorted according to the deviation to reference data.
+    Finally, the class provides sort_details printing {method}.
+    #   Other output strategy will be add later, including output-file, api and etc.  #
+"""
+
+
 import common
 from property import Property
 from typing import List

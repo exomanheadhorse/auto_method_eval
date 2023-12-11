@@ -6,7 +6,11 @@
 """
 
 
+"""
+    Property is the class for experiment data, which possess method name and value for method.
+"""
+
 class Property:
     def __init__(self, method, value) -> None:
-        self.method = method
-        self.value = value
+        self.method = method  # experiment method name
+        self.value = value  # experiment value

@@ -13,38 +13,6 @@ from enum_file import Properties
 from property import Property
 
 
-# class EvaluateHandler:
-#     def __init__(self) -> None:
-#         self.db_ins = common.get_db_hander('compounds')
-#         self.id_2_name: Dict[str, str] = dict()
-#         self.id_2_compounds: Dict[str, Compound] = dict()
-
-#     def load_data(self):
-#         pass
-
-#     def get_ref_data(self):
-#         # return two dict, ct and cp
-#         pass
-
-#     def get_exp_data(self):
-#         # return one dict
-#         pass
-    
-
-# class SingleEvaluateHandler:
-#     def __init__(self) -> None:
-#         self.db_ins = common.get_db_hander('compounds')
-    
-#     def eval_via_name(self, compound_name):
-#         pass
-
-#     def eval_via_id(self, compound_id):
-#         pass
-
-#     def get_ref_data(self, id):
-#         pass
-
-
 class BatchEvaluateHandler:
     def __init__(self) -> None:
         self.db_ins = common.get_db_hander('compounds')

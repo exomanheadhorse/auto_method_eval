@@ -6,6 +6,11 @@
 """
 
 
+"""
+    Properties is the enum class for experimental data type, and the value refers to the table name in mysqlDB.
+    For example, the table name in mysqlDB for critical_temperature is 'critical_temperature_exp_data'.
+"""
+
 from enum import Enum
 
 
