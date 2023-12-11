@@ -58,3 +58,6 @@ class Compound:
 
     def output_result(self):
         pass
+
+    def output_file(self):
+        pass
