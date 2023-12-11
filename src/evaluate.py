@@ -6,6 +6,10 @@
 """
 
 
+"""
+    Evaluate is the entrance of this system. 
+"""
+
 from typing import List, Dict
 import common
 from compound import Compound
@@ -13,11 +17,18 @@ from enum_file import Properties
 from property import Property
 
 
+
+"""
+    BatchEvaluateHandler is the class for experimental method evaluation of compounds batchly.
+    The class provide two method: evaluate via name list, evalute via id list(the id is mol_id in mol-instincts system)
+"""
+
+
 class BatchEvaluateHandler:
     def __init__(self) -> None:
-        self.db_ins = common.get_db_hander('compounds')
-        self.id_2_name: Dict[str, str] = dict()
-        self.id_2_compounds: Dict[str, Compound] = dict()
+        self.db_ins = common.get_db_hander('compounds')  # db handler
+        self.id_2_name: Dict[str, str] = dict()  # mol_id->iupac_name
+        self.id_2_compounds: Dict[str, Compound] = dict()  #mol_id->compounds obj
 
 
     def eval_via_name_list(self, compounds_list: List[str]):
@@ -41,7 +52,7 @@ class BatchEvaluateHandler:
         exp_data_t = self.get_experiment_data(compounds_id_list, Properties.critical_temperature.value)
         for id in compounds_id_list:
             args = dict()
-            if id not in ref_data:
+            if id not in ref_data: # decide id whether in reference data or not
                 print(f'{id} does not has data in ref data!')
                 # raise Exception(f'{id} does not exist in db!')
             else:
@@ -51,7 +62,7 @@ class BatchEvaluateHandler:
                 args['critical_temperature'] = ref_data[id]['critical_temperature']
                 args['critical_pressure'] = ref_data[id]['critical_pressure']
 
-            if id not in exp_data_p:
+            if id not in exp_data_p:  # decide id whether in experental data or not
                 print(f'{id} not exist in critical_pressure exp data')
                 raise Exception(f'{id} not exist in critical_pressure exp data')
             else:
@@ -60,7 +71,7 @@ class BatchEvaluateHandler:
                     cur.append(Property(method, value))
                 args['critical_pressure_eval_list'] = cur
 
-            if id not in exp_data_t:
+            if id not in exp_data_t:  # decide id whether in eexperental data or not
                 print(f'{id} not exist in critical_temperature data')
                 raise Exception(f'{id} not exist in critical_temperature data')
             else:
