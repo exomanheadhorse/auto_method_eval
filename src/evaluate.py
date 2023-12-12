@@ -90,6 +90,14 @@ class BatchEvaluateHandler:
 
 
     def get_ref_data(self, id_list: List[int]):
+        """load standard data from db
+
+        Args:
+            id_list (List[int]): mol_id list
+
+        Returns:
+            _type_: {mol_id: {critical_temperature, critical_pressure, iupac_name, formula}}
+        """
         sql = f'''
             SELECT a.mol_id, a.critical_temperature, a.critical_pressure, 
             b.iupac_name, b.formula FROM compounds_basic_properties a 
@@ -106,6 +114,15 @@ class BatchEvaluateHandler:
 
 
     def get_experiment_data(self, id_list: List[int], table_name):
+        """load experimental data from db
+
+        Args:
+            id_list (List[int]): mol_id list
+            table_name (_type_): type of experimental(critical temperature, critical pressure...)
+
+        Returns:
+            _type_: {mol_id: {method1: value, method2: value2, method3: value3}}
+        """
         sql = f'''
             SELECT * FROM {table_name}
             WHERE mol_id in ('{"','".join(id_list)}')

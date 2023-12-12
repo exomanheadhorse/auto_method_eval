@@ -6,6 +6,11 @@
 """
 
 
+"""
+    The file is a collection of common used tools, including db-helper, config-helper, logger and etc.
+"""
+
+
 import csv
 import sys
 import logging
@@ -14,6 +19,8 @@ from database_helper import DatabaseHelper
 from config_helper import ConfigHelper
 
 
+
+# config handler
 def init_config():
     config = ConfigHelper()
     config.load_config()
@@ -23,6 +30,7 @@ def init_config():
 Config = init_config()
 
 
+# logger helper
 def _init_logger(name, log_file):
     logger = logging.getLogger(name)
     handler = logging.handlers.RotatingFileHandler(log_file, 'a', maxBytes=10485760, backupCount=10)
@@ -37,6 +45,7 @@ def _init_logger(name, log_file):
 _Logger_container = {}
 
 
+# log hander
 def get_logger(name):
     global _Logger_container
     if name in _Logger_container:
@@ -47,6 +56,7 @@ def get_logger(name):
     return _Logger_container[name]
 
 
+# db handler
 def get_db_hander(name):
     db = Config.db_info_map.get(name)
     return DatabaseHelper(**db)
